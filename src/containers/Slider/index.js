@@ -10,15 +10,16 @@ const Slider = () => {
   const byDateDesc = data?.focus.sort((evtA, evtB) =>
     new Date(evtA.date) < new Date(evtB.date) ? -1 : 1
   );
-  const nextCard = () => {
-    setTimeout(
-      () => setIndex(index < byDateDesc.length ? index + 1 : 0),
-      5000
-    );
-  };
-  useEffect(() => {
-    nextCard();
-  });
+ // Utilisation de useEffect pour gérer la mise à jour automatique de l'index toutes les 5 secondes
+ useEffect(() => {
+  const timer = setTimeout(() => {
+    setIndex((prevIndex) => (prevIndex < byDateDesc.length - 1 ? prevIndex + 1 : 0)); // Incrémente l'index ou revient à zéro s'il atteint la fin
+  }, 5000);
+
+  // Nettoyage du timer pour éviter les fuites de mémoire
+  return () => clearTimeout(timer);
+}, [index, byDateDesc.length]); // Dépendances de l'effet : index et la longueur des données
+
   return (
     <div className="SlideCardList">
       {byDateDesc?.map((event, idx) => (
@@ -45,7 +46,8 @@ const Slider = () => {
                   key={`${event.id}`}
                   type="radio"
                   name="radio-button"
-                  checked={idx === radioIdx}
+                  checked={index === radioIdx}
+                  // Vérifie si l'index global correspond à l'index de la carte actuellement rendue
                 />
               ))}
             </div>
