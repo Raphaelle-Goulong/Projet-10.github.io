@@ -8,7 +8,7 @@ const Slider = () => {
   const { data } = useData();
   const [index, setIndex] = useState(0);
   const byDateDesc = data?.focus.sort((evtA, evtB) =>
-    new Date(evtA.date) < new Date(evtB.date) ? -1 : 1
+    new Date(evtA.date) > new Date(evtB.date) ? -1 : 1
   );
  // Utilisation de useEffect pour gérer la mise à jour automatique de l'index toutes les 5 secondes
  useEffect(() => {
@@ -18,7 +18,7 @@ const Slider = () => {
 
   // Nettoyage du timer pour éviter les fuites de mémoire
   return () => clearTimeout(timer);
-}, [index, byDateDesc.length]); // Dépendances de l'effet : index et la longueur des données
+}, [index, byDateDesc]); // Dépendances de l'effet : index et la longueur des données
 
   return (
     <div className="SlideCardList">

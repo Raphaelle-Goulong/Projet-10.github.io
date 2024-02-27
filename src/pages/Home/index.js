@@ -12,8 +12,21 @@ import Form from "../../containers/Form";
 import Modal from "../../containers/Modal";
 import { useData } from "../../contexts/DataContext";
 
+
+
+// a commenter 
 const Page = () => {
-  const {last} = useData()
+  const { data } = useData();
+  
+  function lastEvent() {
+    return (data?.focus.sort((evtA, evtB) =>
+      new Date(evtA.date) > new Date(evtB.date) ? -1 : 1)[0]
+    )
+
+  }
+  const last = lastEvent()
+// a commenter 
+
   return <>
     <header>
       <Menu />
@@ -118,7 +131,7 @@ const Page = () => {
         <h3>Notre derniére prestation</h3>
         <EventCard
           imageSrc={last?.cover}
-          title={last?.title}
+          title={last?.title }
           date={new Date(last?.date)}
           small
           label="boom"
