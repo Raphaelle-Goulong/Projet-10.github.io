@@ -29,7 +29,7 @@ const EventCard = ({
   );
 
 EventCard.propTypes = {
-  imageSrc: PropTypes.string.isRequired,
+  imageSrc: PropTypes.string, // j'ai enlevé le isRequired
   imageAlt: PropTypes.string,
   date: PropTypes.instanceOf(Date).isRequired,
   title: PropTypes.string.isRequired,
@@ -40,6 +40,7 @@ EventCard.propTypes = {
 EventCard.defaultProps = {
   imageAlt: "image",
   small: false,
+  imageSrc: "/path/to/default-image.jpg", // ajout du format par défaut
 }
 
 export default EventCard;

@@ -7,38 +7,21 @@ import ModalEvent from "../ModalEvent";
 
 import "./style.css";
 
+// Nombre d'événements par page
 const PER_PAGE = 9;
-// Fonction pour filtrer les événements en fonction du type
-// const filterEventsByType = (events, type) => {
-//   console.log("events", type, events);
-//   if (!type) {
-//     return events; // Retourne tous les événements si aucun type n'est spécifié
-//   } 
-//     return events.filter(event => event.type === type); // Retourne les événements avec le type spécifié
-    
-// };
-
 
 const EventList = () => {
+  // Récupération des données et de l'erreur depuis le contexte
   const { data, error } = useData();
+  
+  // États locaux pour le type d'événement sélectionné et la page actuelle
   const [type, setType] = useState();
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Utilisation de la fonction filterEventsByType pour filtrer les événements
-  // const filteredEvents = filterEventsByType(data?.events || [], type)
- 
- 
-  // .filter((event, index) => {
-  //   if (
-  //     (currentPage - 1) * PER_PAGE <= index &&
-  //     PER_PAGE * currentPage > index
-  //   ) {
-  //     return true;
-  //   }
-  //   return false;
-  // }); 
-  const filteredEvents = ((!type ? data?.events : data?.events.filter((e) => e.type === type)) || []).filter(
-    (event, index) => {
+  // Filtrage des événements en fonction du type sélectionné et de la pagination
+  const filteredEvents = ((!type ? data?.events : data?.events.filter((e) => e.type === type)) || [])
+    .filter((event, index) => {
+      // Vérification si l'événement est dans la plage de la page actuelle
       if (
         (currentPage - 1) * PER_PAGE <= index &&
         PER_PAGE * currentPage > index
@@ -46,45 +29,51 @@ const EventList = () => {
         return true;
       }
       return false;
-    }
-  );
+    });
 
-  
-  const changeType = (evtType) => { console.log("test",evtType);
-    setCurrentPage(1);
-    setType(evtType);
+  // Fonction pour changer le type d'événement et réinitialiser la page courante
+  const changeType = (evtType) => {
+    console.log("test", evtType); // Debug
+    setCurrentPage(1); // Réinitialise la page à 1 lors du changement de type
+    setType(evtType); // Met à jour le type d'événement sélectionné
   };
-  
+
+  // Calcul du nombre total de pages
   const pageNumber = Math.floor((filteredEvents?.length || 0) / PER_PAGE) + 1;
+
+  // Création d'une liste des types d'événements uniques
   const typeList = new Set(data?.events.map((event) => event.type));
+  
   return (
     <>
-      {error && <div>An error occured</div>}
+      {error && <div>An error occurred</div>} {/* Affichage d'un message d'erreur si nécessaire */}
       {data === null ? (
-        "loading"
+        "loading" // Affichage d'un message de chargement si les données sont nulles
       ) : (
         <>
           <h3 className="SelectTitle">Catégories</h3>
           <Select
-            selection={Array.from(typeList)}
+            selection={Array.from(typeList)} // Conversion de l'ensemble en tableau pour le sélecteur
             onChange={(value) => (value ? changeType(value) : changeType(null))}
           />
           <div id="events" className="ListContainer">
+            {/* Affichage des cartes d'événements dans un modal */}
             {filteredEvents.map((event) => (
               <Modal key={event.id} Content={<ModalEvent event={event} />}>
                 {({ setIsOpened }) => (
                   <EventCard
-                    onClick={() => setIsOpened(true)}
-                    imageSrc={event.cover}
-                    title={event.title}
-                    date={new Date(event.date)}
-                    label={event.type}
+                    onClick={() => setIsOpened(true)} // Ouvre le modal au clic
+                    imageSrc={event.cover} // Image de couverture de l'événement
+                    title={event.title} // Titre de l'événement
+                    date={new Date(event.date)} // Date de l'événement
+                    label={event.type} // Type d'événement
                   />
                 )}
               </Modal>
             ))}
           </div>
           <div className="Pagination">
+            {/* Génération des liens de pagination */}
             {[...Array(pageNumber || 0)].map((_, n) => (
               // eslint-disable-next-line react/no-array-index-key
               <a key={n} href="#events" onClick={() => setCurrentPage(n + 1)}>
