@@ -46,8 +46,9 @@ const Slider = () => {
                                     key={event.title}
                                     type="radio"
                                     name="radio-button"
-                                    defaultChecked={index === radioIdx}
+                                    checked={index === radioIdx}
                                     // Vérifie si l'index global correspond à l'index de la carte actuellement rendue
+                                    onChange={() => {}} 
                                 />
                             ))}
                         </div>

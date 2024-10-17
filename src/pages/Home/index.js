@@ -77,12 +77,7 @@ const Page = () => {
                 <section className="EventsContainer">
                     <h2 className="Title">Nos réalisations</h2>
                     <EventList
-                    // data={data}
-                    // type={type}
-                    // setType={setType}
-                    // currentPage={currentPage}
-                    // setCurrentPage={setCurrentPage}
-                    // changeType={changeType}
+                   
                     />
                 </section>
                 <section className="PeoplesContainer">
