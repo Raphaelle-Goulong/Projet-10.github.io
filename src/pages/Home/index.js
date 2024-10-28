@@ -24,18 +24,7 @@ const Page = () => {
     const last = lastEvent()
     // a commenter
 
-    // const Page = () => {
-    //   const { data } = useData();
-    //   const [type, setType] = useState();
-    //   const [currentPage, setCurrentPage] = useState(1);
 
-    //   const changeType = (evtType) => {
-    //     setCurrentPage(1);
-    //     setType(evtType);
-    //   };
-    // }
-
-    // console.log("last:", last);
     return (
         <>
             <header>
